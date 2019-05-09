@@ -24,6 +24,7 @@ public class Helper {
 	private static MongoDatabase database;
 	
 	private static String REGISTERED_ENTITY_TABLE = "broker-registered-entity";
+	private static String ENTITY_PATHS_TABLE = "broker-entity-paths";
 	
 	public Helper(String databaseName) {
 		mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://Gehad:Aboarab97@cloud-computing-zqxty.mongodb.net/test?retryWrites=true"));
@@ -53,6 +54,32 @@ public class Helper {
 			e.printStackTrace();
 			return "{}";
 		}
+	}
+	
+	public static String getPath(String entityType) {
+		MongoCollection<Document> collection = database.getCollection(ENTITY_PATHS_TABLE);
+		FindIterable<Document> documents = collection.find();
+		
+		for(Document d:documents) {
+			if(d.get("type").equals(entityType)) {
+				return d.getString("path");
+			}
+		}
+		
+		return "";
+	}
+	
+	public static String getServicePath(String entityType, String service) {
+		MongoCollection<Document> collection = database.getCollection(ENTITY_PATHS_TABLE);
+		FindIterable<Document> documents = collection.find();
+		
+		for(Document d:documents) {
+			if(d.get("type").equals(entityType) && d.get("service").equals(service)) {
+				return d.getString("service-path");
+			}
+		}
+		
+		return "";
 	}
 	
 	public static String registerEntity(String type, String name, String path) {
@@ -86,6 +113,23 @@ public class Helper {
 	public static void main(String[] args) {
 		mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://Gehad:Aboarab97@cloud-computing-zqxty.mongodb.net/test?retryWrites=true"));
 		database = mongoClient.getDatabase("cloud-computing");
+		
+//		System.out.println(getPath("insurance"));
+//		System.out.println(getPath("testing-center"));
+//		System.out.println(getPath("dubai-police"));
+//		System.out.println(getPath("rta"));
+//		
+//		System.out.println(getServicePath("insurance","get-packages"));
+//		System.out.println(getServicePath("insurance","get-plan"));
+//		System.out.println(getServicePath("insurance","renew-plan"));
+//		System.out.println(getServicePath("insurance","register-package"));
+//		System.out.println(getServicePath("testing-center","get-timings"));
+//		System.out.println(getServicePath("testing-center","book-timing"));
+//		System.out.println(getServicePath("testing-center","booked-timing"));
+//		System.out.println(getServicePath("dubai-police","get-fines"));
+//		System.out.println(getServicePath("dubai-police","payment"));
+//		System.out.println(getServicePath("rta","renewal-fees"));
+//		System.out.println(getServicePath("rta","renew-registration"));
 	}
 
 }

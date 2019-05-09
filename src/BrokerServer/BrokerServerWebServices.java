@@ -17,7 +17,7 @@ public class BrokerServerWebServices {
 	public String registerEntity(@PathParam("type") String type, 
 			@PathParam("name") String name, 
 			@PathParam("path") String path) {
-		// Retrieve packages from the database
+
 		return helper.registerEntity(type, name, path);
 	}
 	
@@ -26,8 +26,10 @@ public class BrokerServerWebServices {
 	@Path("insurance/{insurance}/get-packages")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getAllPackages(@PathParam("insurance") String insurance) {
-		// Retrieve packages from the database
-		return helper.callRest("http://insurance-env.kyp9qxb3jm.eu-west-1.elasticbeanstalk.com/insurance/"+insurance+"/get-packages");
+		
+		String path = helper.getPath("insurance");
+		String servicePath = helper.getServicePath("insurance", "get-packages");
+		return helper.callRest(path + insurance + "/" + servicePath);
 	}
 	
 	@GET
@@ -35,8 +37,10 @@ public class BrokerServerWebServices {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getPlan(@PathParam("insurance") String insurance,
 			@PathParam("reference-no") String reference_no) {
-		return helper.callRest("http://insurance-env.kyp9qxb3jm.eu-west-1.elasticbeanstalk.com/insurance/"
-			+insurance+"/get-plan/"+reference_no);
+		
+		String path = helper.getPath("insurance");
+		String servicePath = helper.getServicePath("insurance","get-plan");
+		return helper.callRest(path + insurance + "/" + servicePath + reference_no);
 	}
 	
 	@GET
@@ -46,8 +50,10 @@ public class BrokerServerWebServices {
 			@PathParam("name") String name, 
 			@PathParam("contact") String contact, 
 			@PathParam("package-no") String package_no) {
-		return helper.callRest("http://insurance-env.kyp9qxb3jm.eu-west-1.elasticbeanstalk.com/insurance/"
-			+insurance+"/register-package/"+name+"/"+contact+"/"+package_no);
+		
+		String path = helper.getPath("insurance");
+		String servicePath = helper.getServicePath("insurance","register-package");
+		return helper.callRest(path + insurance + "/" + servicePath + name + "/" + contact + "/" + package_no);
 	}
 	
 	@GET
@@ -57,8 +63,10 @@ public class BrokerServerWebServices {
 			@PathParam("reference-no") String reference_no,
 			@PathParam("credit-card") String credit_card, 
 			@PathParam("amount") double amount) {
-		return helper.callRest("http://insurance-env.kyp9qxb3jm.eu-west-1.elasticbeanstalk.com/insurance/"
-				+insurance+"/renew-plan/"+reference_no+"/"+credit_card+"/"+amount);
+		
+		String path = helper.getPath("insurance");
+		String servicePath = helper.getServicePath("insurance","renew-plan");
+		return helper.callRest(path + insurance + "/" + servicePath + reference_no + "/" + credit_card + "/" + amount);
 	}
 	
 	// =============Testing Center=============
@@ -66,7 +74,10 @@ public class BrokerServerWebServices {
 	@Path("testing-center/{center}/get-timings")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getTimings(@PathParam("center") String center) {
-		return helper.callRest("http://testingcenter-env.wpitibtrtc.eu-west-1.elasticbeanstalk.com/testing-center/"+center+"/get-timings");
+		
+		String path = helper.getPath("testing-center");
+		String servicePath = helper.getServicePath("testing-center","get-timings");
+		return helper.callRest(path + center + "/" + servicePath);
 	}
 	
 	@GET
@@ -74,8 +85,10 @@ public class BrokerServerWebServices {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getBookedTiming(@PathParam("center") String center,
 			@PathParam("customer-no") String customer_no) {
-		return helper.callRest("http://testingcenter-env.wpitibtrtc.eu-west-1.elasticbeanstalk.com/testing-center/"
-			+center+"/booked-timing/"+customer_no);
+
+		String path = helper.getPath("testing-center");
+		String servicePath = helper.getServicePath("testing-center","booked-timing");
+		return helper.callRest(path + center + "/" + servicePath + customer_no);
 	}
 	
 	@GET
@@ -86,8 +99,10 @@ public class BrokerServerWebServices {
 			@PathParam("month") String month,
 			@PathParam("year") String year,
 			@PathParam("time") String time) {
-		return helper.callRest("http://testingcenter-env.wpitibtrtc.eu-west-1.elasticbeanstalk.com/testing-center/"
-			+center+"/book-timing/"+day+"/"+month+"/"+year+"/"+time);
+		
+		String path = helper.getPath("testing-center");
+		String servicePath = helper.getServicePath("testing-center","book-timing");
+		return helper.callRest(path + center + "/" + servicePath + day + "/" + month + "/" + year + "/" + time);
 	}
 	
 	// =============Dubai Police=============
@@ -95,7 +110,10 @@ public class BrokerServerWebServices {
 	@Path("dubai-police/get-fines/{license-no}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getFines(@PathParam("license-no") String license_no) {
-		return helper.callRest("http://dubaipolice2-env.kxvzraqbbs.eu-west-1.elasticbeanstalk.com/dubai-police/get-fines/"+license_no);
+		
+		String path = helper.getPath("dubai-police");
+		String servicePath = helper.getServicePath("dubai-police","get-fines");
+		return helper.callRest(path + servicePath + license_no);
 	}
 	
 	@GET
@@ -105,8 +123,10 @@ public class BrokerServerWebServices {
 			@PathParam("license-no") String license_no, 
 			@PathParam("credit-card") String credit_card, 
 			@PathParam("amount") double amount) {
-		return helper.callRest("http://dubaipolice2-env.kxvzraqbbs.eu-west-1.elasticbeanstalk.com/dubai-police/payment/"
-				+fine_no+"/"+license_no+"/"+credit_card+"/"+amount);
+		
+		String path = helper.getPath("dubai-police");
+		String servicePath = helper.getServicePath("dubai-police","payment");
+		return helper.callRest(path + servicePath + fine_no + "/" + license_no + "/" + credit_card + "/" + amount);
 	}
 	
 	// =============RTA=============
@@ -115,8 +135,10 @@ public class BrokerServerWebServices {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getRenewalFees(@PathParam("license-no") String license_no, 
 			@PathParam("registration-no") String registration_no) {
-		return helper.callRest("http://rtaa-env.iy3hpzqnez.eu-west-1.elasticbeanstalk.com/rta/renewal-fees/"
-				+license_no+"/"+registration_no);
+		
+		String path = helper.getPath("rta");
+		String servicePath = helper.getServicePath("rta","renewal-fees");
+		return helper.callRest(path + servicePath + license_no + "/" + registration_no);
 	}
 	
 	@GET
@@ -126,8 +148,10 @@ public class BrokerServerWebServices {
 			@PathParam("registration-no") String registration_no,
 			@PathParam("credit-card") String credit_card, 
 			@PathParam("amount") double amount) {
-		return helper.callRest("http://rtaa-env.iy3hpzqnez.eu-west-1.elasticbeanstalk.com/rta/renew-registration/"
-				+license_no+"/"+registration_no+"/"+credit_card+"/"+amount);
+		
+		String path = helper.getPath("rta");
+		String servicePath = helper.getServicePath("rta","renew-registration");
+		return helper.callRest(path + servicePath + license_no + "/" + registration_no + "/" + credit_card + "/" + amount);
 	}
 
 }
